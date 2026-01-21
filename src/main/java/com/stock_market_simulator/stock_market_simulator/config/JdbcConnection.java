@@ -8,7 +8,7 @@ public class JdbcConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/market_stock?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
     private static final String USER = "root";
-    private static final String PASSWORD = "Password";
+    private static final String PASSWORD = System.getenv("Password");
     public static Connection getConnection() {
         Connection connection = null;
         try {

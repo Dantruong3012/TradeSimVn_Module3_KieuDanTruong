@@ -10,7 +10,9 @@
 
   <div class="flex-1 overflow-y-auto py-4">
     <nav class="px-3 space-y-1">
-      <a href="home.jsp" class="flex items-center gap-3 px-3 py-2.5 bg-primary/10 text-primary rounded-lg group transition-colors">
+
+      <a href="${pageContext.request.contextPath}/home"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-lg group transition-colors ${pageContext.request.servletPath.contains('/home') || pageContext.request.servletPath.contains('home.jsp') ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-white hover:bg-dark-700'}">
         <i class="fa-solid fa-chart-pie w-5 text-center"></i>
         <span class="font-medium text-sm">Tổng quan</span>
       </a>
@@ -29,9 +31,9 @@
         <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Thị trường</p>
       </div>
 
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white hover:bg-dark-700 rounded-lg group transition-colors">
-        <i class="fa-solid fa-fire w-5 text-center"></i>
-        <span class="font-medium text-sm">Top biến động</span>
+      <a href="${pageContext.request.contextPath}/order-book" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white hover:bg-dark-700 rounded-lg group transition-colors ${pageContext.request.servletPath.contains('order-book') ? 'bg-primary/10 text-primary' : ''}">
+        <i class="fa-solid fa-list-check w-5 text-center"></i>
+        <span class="font-medium text-sm">Sổ lệnh</span>
       </a>
 
       <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-white hover:bg-dark-700 rounded-lg group transition-colors">

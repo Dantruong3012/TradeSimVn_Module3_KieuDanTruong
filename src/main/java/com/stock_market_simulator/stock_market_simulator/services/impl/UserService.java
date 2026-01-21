@@ -24,7 +24,7 @@ public class UserService {
         return userDao.isUserNameExist(userName);
     }
 
-    public  boolean register(User user) {
+    public boolean register(User user) {
         Connection connection = null;
         try {
 
@@ -43,7 +43,7 @@ public class UserService {
 
             // goi ham userDao de dang ky user moi va tra ve id de cong cho 1 toi.
             int newUserID = userDao.registerNewUser(connection, user);
-            if (newUserID == 0){
+            if (newUserID == 0) {
                 connection.rollback();
                 return false;
             }
@@ -60,86 +60,96 @@ public class UserService {
             notificationDao.insertIntoNotification(connection, notifi);
             connection.commit();
             return true;
-        }catch (SQLException e){
-            try{
+        } catch (SQLException e) {
+            try {
                 connection.rollback();
-            }catch (SQLException ex){ex.printStackTrace();}
-            return  false;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
         } finally {
             try {
-                if (connection != null){connection.close();}
-            }catch (SQLException e){e.printStackTrace();}
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public UserDto login(String userName, String userPassword) throws  SQLException {
-       Connection connection = null;
-       try {
-           connection = JdbcConnection.getConnection();
+    public UserDto login(String userName, String userPassword) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = JdbcConnection.getConnection();
 
-           User userEntity = userDao.findUserByUserName(connection, userName);
-           if (userEntity == null){
-               return  null;
-           }
+            User userEntity = userDao.findUserByUserName(connection, userName);
+            if (userEntity == null) {
+                return null;
+            }
 
-           if (PasswordUtil.checkPassword(userPassword, userEntity.getUserPassword())){
-               UserDto userDto = new UserDto();
-               userDto.setId(userEntity.getId());
-               userDto.setUserName(userEntity.getUserName());
-               userDto.setUserDisplayName(userEntity.getDisplayName());
-               userDto.setBalance(userEntity.getBalance());
-               userDto.setLockedBalance(userEntity.getLockedBalance());
-               return  userDto;
-           }
+            if (PasswordUtil.checkPassword(userPassword, userEntity.getUserPassword())) {
+                UserDto userDto = new UserDto();
+                userDto.setId(userEntity.getId());
+                userDto.setUserName(userEntity.getUserName());
+                userDto.setUserDisplayName(userEntity.getDisplayName());
+                userDto.setBalance(userEntity.getBalance());
+                userDto.setLockedBalance(userEntity.getLockedBalance());
+                return userDto;
+            }
 
-       }finally {
-          try {
-              if (connection != null){connection.close();}
-          } catch (SQLException e) {e.printStackTrace();}
-       }
-       return  null;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
-    public boolean resetPassword(String userName, String securityCode, String newPassword){
-       Connection connection = null;
-       try {
-           connection = JdbcConnection.getConnection();
-           connection.setAutoCommit(false);
+    public boolean resetPassword(String userName, String securityCode, String newPassword) {
+        Connection connection = null;
+        try {
+            connection = JdbcConnection.getConnection();
+            connection.setAutoCommit(false);
 
-           User user    = userDao.findUserByUserName(connection, userName);
-           if (user == null){
-               return false;
-           }
+            User user = userDao.findUserByUserName(connection, userName);
+            if (user == null) {
+                return false;
+            }
 
-           if (user.getSecurityCode() == null || !securityCode.equals(user.getSecurityCode())){
-               return  false;
-           }
-           int userId = user.getId();
-           String newHashedPassword = PasswordUtil.hashPassword(newPassword);
-           userDao.updateUserPassword(connection, newHashedPassword, userId);
-           userDao.updateUserConfirmPassword(connection, newHashedPassword, userId);
-           connection.commit(); // commit luu thay doi
-           return  true;
+            if (user.getSecurityCode() == null || !securityCode.equals(user.getSecurityCode())) {
+                return false;
+            }
+            int userId = user.getId();
+            String newHashedPassword = PasswordUtil.hashPassword(newPassword);
+            userDao.updateUserPassword(connection, newHashedPassword, userId);
+            userDao.updateUserConfirmPassword(connection, newHashedPassword, userId);
+            connection.commit(); // commit luu thay doi
+            return true;
 
-       } catch (SQLException e) {
-           try {
-               if (connection != null){
-                   connection.rollback();
-               }
-           }catch (SQLException ex){
-               ex.printStackTrace();
-           }
-           e.printStackTrace();
-       }finally {
-           if (connection != null){
-               try {
-                   connection.close();
-               } catch (SQLException ex) {
-                   ex.printStackTrace();
-               }
-           }
-       }
-    return  false;
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -168,8 +178,12 @@ public class UserService {
             return null;
         } finally {
             try {
-                if (connection != null) { connection.close(); }
-            } catch (SQLException ex) { ex.printStackTrace(); }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

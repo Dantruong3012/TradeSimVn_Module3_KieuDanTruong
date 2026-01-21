@@ -72,7 +72,7 @@ public class DashbordController extends HttpServlet {
             }
 
             double totalPerformance = 0;
-            BigDecimal initialCapital = totalNav.subtract(totalGainLoss); // <-- Bạn đã tính ở đây
+            BigDecimal initialCapital = totalNav.subtract(totalGainLoss);
 
             if (initialCapital.compareTo(BigDecimal.ZERO) > 0) {
                 totalPerformance = totalGainLoss.divide(initialCapital, 4, RoundingMode.HALF_UP).doubleValue() * 100;

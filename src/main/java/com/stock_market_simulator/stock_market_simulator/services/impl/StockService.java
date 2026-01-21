@@ -24,7 +24,7 @@ public class StockService {
             List<Stock> stockList = stockDao.findAllStocks(connection);
 
             for (Stock s : stockList) {
-                // 1. TÍNH TOÁN CÁC CHỈ SỐ CƠ BẢN
+                // TÍNH TOÁN CÁC CHỈ SỐ CƠ BẢN
                 BigDecimal ref = s.getRefPrice();
                 BigDecimal current = s.getCurrentPrice();
 

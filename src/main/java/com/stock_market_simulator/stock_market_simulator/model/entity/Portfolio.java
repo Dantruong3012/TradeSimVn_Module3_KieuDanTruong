@@ -6,6 +6,7 @@ public class Portfolio {
     private Integer userId;
     private String symbol;
     private Integer quantity;
+    private Integer blockedQty;
     private BigDecimal avgPrice;
 
     public Portfolio() {}
@@ -17,10 +18,11 @@ public class Portfolio {
         this.avgPrice = avgPrice;
     }
 
-    public Portfolio(Integer userId, String symbol, Integer quantity, BigDecimal avgPrice) {
+    public Portfolio(Integer userId, String symbol, Integer quantity, Integer blockedQty, BigDecimal avgPrice) {
         this.userId = userId;
         this.symbol = symbol;
         this.quantity = quantity;
+        this.blockedQty = blockedQty;
         this.avgPrice = avgPrice;
     }
 
@@ -54,5 +56,13 @@ public class Portfolio {
 
     public void setAvgPrice(BigDecimal avgPrice) {
         this.avgPrice = avgPrice;
+    }
+
+    public Integer getBlockedQty() {
+        return blockedQty;
+    }
+
+    public void setBlockedQty(Integer blockedQty) {
+        this.blockedQty = blockedQty;
     }
 }

@@ -1,6 +1,7 @@
 package com.stock_market_simulator.stock_market_simulator.dao;
 
 import com.stock_market_simulator.stock_market_simulator.config.JdbcConnection;
+import com.stock_market_simulator.stock_market_simulator.model.entity.Order;
 import com.stock_market_simulator.stock_market_simulator.model.entity.Portfolio;
 
 import java.sql.Connection;
@@ -23,6 +24,7 @@ public class PortfolioDao {
                         rs.getInt("user_id"),
                         rs.getString("symbol"),
                         rs.getInt("quantity"),
+                        rs.getInt("blocked_qty"),
                         rs.getBigDecimal("avg_price")
                 );
             }
@@ -32,12 +34,13 @@ public class PortfolioDao {
 
     // Insert Chỉ dùng khi User mua mã này LẦN ĐẦU TIÊN
     public void insertIntoPortfolio(Connection connection, Portfolio portfolio) throws SQLException {
-        String sql = "INSERT INTO portfolio (user_id, symbol, quantity, avg_price) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO portfolio (user_id, symbol, quantity, blocked_qty, avg_price) VALUES (?,?,?,?,?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setInt(1, portfolio.getUserId());
             ps.setString(2, portfolio.getSymbol());
             ps.setInt(3, portfolio.getQuantity());
-            ps.setBigDecimal(4, portfolio.getAvgPrice());
+            ps.setInt(4, portfolio.getBlockedQty());
+            ps.setBigDecimal(5, portfolio.getAvgPrice());
             ps.executeUpdate();
         }
     }
@@ -67,6 +70,7 @@ public class PortfolioDao {
                         rs.getInt("user_id"),
                         rs.getString("symbol"),
                         rs.getInt("quantity"),
+                        rs.getInt("blocked_qty"),
                         rs.getBigDecimal("avg_price")
                 );
                 list.add(p);
@@ -86,4 +90,14 @@ public class PortfolioDao {
     }
 
 
+    // dung cho viec dat lenh ban, sua, huy lenh
+    public void updateStockLockedQty(Connection connection, int quantityToLock, String symbol, int userId) throws SQLException {
+        String sql = "UPDATE portfolio SET blocked_qty = blocked_qty + ? WHERE user_id = ? AND symbol = ?";
+        try(PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setInt(1, quantityToLock);
+            ps.setInt(2, userId);
+            ps.setString(3, symbol);
+            ps.executeUpdate();
+        }
+    }
 }

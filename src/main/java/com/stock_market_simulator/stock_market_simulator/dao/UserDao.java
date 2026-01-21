@@ -90,9 +90,9 @@ public class UserDao {
         return null;
     }
 
-    // CẬP NHẬT SỐ DƯ (OK)
+    // CẬP NHẬT SỐ DƯ (OK) tai khoan chinh va tai khoan treo
     public void updateUserBalance(Connection connection, int userId, BigDecimal newBalance, BigDecimal newLockedBalance) throws SQLException {
-        String sql = "UPDATE users SET balance = ?, locked_balance = ? WHERE id = ?";
+        String sql = "UPDATE users SET balance = balance + ?, locked_balance = locked_balance + ? WHERE id = ?";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setBigDecimal(1, newBalance);
             ps.setBigDecimal(2, newLockedBalance);
@@ -100,6 +100,16 @@ public class UserDao {
             ps.executeUpdate();
         }
     }
+
+    // dung cho viec dat lenh huy lenh va thay doi lenh
+public  void  updateLockedBalance   (Connection connection, int userId, BigDecimal newLockedBalance) throws  SQLException{
+    String sql = "UPDATE users SET locked_balance = locked_balance + ? WHERE id = ?";
+    try(PreparedStatement ps = connection.prepareStatement(sql)){
+        ps.setBigDecimal(1, newLockedBalance);
+        ps.setInt(2, userId);
+        ps.executeUpdate();
+    }
+}
 
 
     // UPDATE MK
